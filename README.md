@@ -8,8 +8,8 @@ O sistema `app_servico` gerencia o fluxo completo de um pedido de delivery, desd
 
 ## 👥 Equipe de Desenvolvimento
 * **Gabriel Faria** - **[fariagabriel1509@gmail.com]**
-* **Elisa Leão Costa Gonçalves **[elisa.leao@gec.inatel.br]** - 
-* **[Lívia Toledo Gandini]** - 
+* **Elisa Leão Costa Gonçalves **[elisa.leao@gec.inatel.br]**  
+* **[Lívia Toledo Gandini]** - **[livia.toledo@gec.inatel.br]**
 
 ## 🏗️ Estrutura do Banco de Dados (Tabelas)
 
