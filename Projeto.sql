@@ -204,12 +204,14 @@ CREATE USER 'RicardoCliente'@'localhost' IDENTIFIED BY 'Senha3535';
 CREATE USER 'LuizinhoMotoboy'@'localhost' IDENTIFIED BY 'Senha456';
 
 
--- ROLES
-
+-- =============================================================================
+-- ROLES E PERMISSÕES (DCL)
+-- =============================================================================
 CREATE ROLE cliente;
 CREATE ROLE restaurante;
 CREATE ROLE entregador;
 
+-- ==================== VISÃO DO CLIENTE ====================
 -- View para cliente ver restaurantes
 CREATE VIEW v_cliente_restaurante AS
 SELECT nome, endereco
@@ -217,51 +219,53 @@ FROM Restaurante;
 
 -- View para cliente ver produtos
 CREATE VIEW v_cliente_produto AS
-SELECT nome, preco
+SELECT nome_produto AS nome, preco 
 FROM Produto;
 
--- Permissões
+-- Permissões do Cliente
 GRANT SELECT ON v_cliente_restaurante TO cliente;
 GRANT SELECT ON v_cliente_produto TO cliente;
-GRANT INSERT (cliente_id, restaurante_id, data, status) ON Pedido TO cliente;
-GRANT INSERT (pedido_id, produto_id, quantidade) ON Item_Pedido TO cliente;
-GRANT SELECT ON Pedido TO cliente; -- apenas seus pedidos, controlado pela aplicação
-GRANT SELECT ON v_entregador_cliente TO 'entregador';
+GRANT INSERT (cliente_id, data, status) ON Pedido TO cliente; -- Removido restaurante_id que não existe aqui
+GRANT INSERT (pedido_id, cod_produto, quantidade) ON Pedido_Itens TO cliente; -- Corrigido nome da tabela e coluna
+GRANT SELECT ON Pedido TO cliente; 
 
+-- ==================== VISÃO DO RESTAURANTE ====================
 -- View para restaurante ver pedidos recebidos
 CREATE VIEW v_restaurante_pedido AS
 SELECT id, cliente_id, data, status
 FROM Pedido;
 
--- Permissões
+-- Permissões do Restaurante
 GRANT SELECT ON v_restaurante_pedido TO restaurante;
 GRANT SELECT, INSERT, UPDATE, DELETE ON Produto TO restaurante;
 GRANT UPDATE (status) ON Pedido TO restaurante;
 GRANT UPDATE (nome, endereco, telefone, cnpj) ON Restaurante TO restaurante;
 
--- View para entregador ver pedidos atribuídos
+-- ==================== VISÃO DO ENTREGADOR ====================
+-- View para entregador ver pedidos atribuídos 
 CREATE VIEW v_entregador_pedido AS
-SELECT id, cliente_id, endereco_entrega, status
-FROM Pedido;
+SELECT p.id AS pedido_id, p.cliente_id, c.endereco AS endereco_entrega, p.status
+FROM Pedido p
+INNER JOIN Cliente c ON p.cliente_id = c.id;
 
--- View para entregador ver dados do cliente
-CREATE VIEW v_entregador_cliente AS
-SELECT nome, telefone, endereco
-FROM Cliente;
-
--- Permissões
+-- Permissões do Entregador
 GRANT SELECT ON v_entregador_pedido TO entregador;
 GRANT UPDATE (status) ON Pedido TO entregador;
-GRANT SELECT ON v_entregador_cliente TO entregador;
+GRANT SELECT ON v_entregador_cliente TO entregador; -- Utiliza aquela View completa que já estava criada mais acima
 
-
--- Exemplo de atribuição
+-- =============================================================================
+-- ATRIBUIÇÃO DE ROLES AOS USUÁRIOS
+-- =============================================================================
 GRANT cliente TO 'RicardoCliente'@'localhost';
 GRANT restaurante TO 'PedrinhoSushi'@'localhost';
 GRANT entregador TO 'LuizinhoMotoboy'@'localhost';
 
+-- Para o MySQL ativar as roles padrão de cada usuário assim que eles logarem:
+SET DEFAULT ROLE cliente TO 'RicardoCliente'@'localhost';
+SET DEFAULT ROLE restaurante TO 'PedrinhoSushi'@'localhost';
+SET DEFAULT ROLE entregador TO 'LuizinhoMotoboy'@'localhost';
 
 -- =============================================================================
--- TESTE DA VIEW
+-- TESTE DA VIEW FINAL
 -- =============================================================================
 SELECT * FROM pedido_detalhado;
