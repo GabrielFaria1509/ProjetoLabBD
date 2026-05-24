@@ -7,9 +7,9 @@ Projeto prático de Banco de Dados Relacional desenvolvido por estudantes de Eng
 O sistema `app_servico` gerencia o fluxo completo de um pedido de delivery, desde o cadastro dos usuários e restaurantes até a alocação de entregadores e cálculo financeiro dos itens solicitados. O projeto foi construído utilizando **MySQL** e aplica conceitos avançados de DDL, DML, DQL e DCL.
 
 ## 👥 Equipe de Desenvolvimento
-* **Gabriel Faria** - [fariagabriel1509@gmial.com]
-* **[Nome do Colega 1]** - [Matrícula/Contato]
-* **[Nome do Colega 2]** - [Matrícula/Contato]
+* **Gabriel Faria** - **[fariagabriel1509@gmail.com]**
+* **Elisa Leão Costa Gonçalves **[elisa.leao@gec.inatel.br]** - 
+* **[Lívia Toledo Gandini]** - 
 
 ## 🏗️ Estrutura do Banco de Dados (Tabelas)
 
