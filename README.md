@@ -21,7 +21,6 @@ O banco de dados está normalizado e estruturado nas seguintes entidades princip
 * **`Entregador`**: Informações da frota de entregadores e seus veículos.
 * **`Pedido`**: Tabela central que registra a transação. Possui controle de data, `status` (via ENUM) e liga o Cliente ao Entregador alocado.
 * **`Pedido_Itens`**: Tabela associativa (N:M) que detalha a composição do pedido, registrando a quantidade e travando o preço unitário no momento da compra.
-
 ## 🚀 Recursos Avançados Implementados
 
 Para garantir a integridade, automação e segurança dos dados, o script implementa os seguintes objetos programáveis:
@@ -30,17 +29,23 @@ Para garantir a integridade, automação e segurança dos dados, o script implem
 * **`statusped_inicial`**: Garante regra de negócio automatizada. Toda vez que um novo registro é inserido na tabela `Pedido` sem um status definido, a trigger atua em nível `BEFORE INSERT` e altera o status automaticamente para `'Pendente'`.
 
 ### 2. Stored Procedures (Procedimentos Armazenados)
-* **`criar_pedido_automatico`**: Facilita testes e integrações. Recebe apenas o ID de um cliente, sorteia um entregador aleatório do banco de dados (usando `ORDER BY RAND()`) e gera um pedido inicial de forma automatizada.
+* **`criar_pedido_automatico`**: Facilita testes e integrações. Recebe apenas o ID de um cliente, sorteia um entregador aleatório do banco de dados (usando `ORDER BY RAND()`) e gera um pedido inicial de forma automatizada (forçando a ação da Trigger).
 
-### 3. Views (Visões)
-* **`pedido_detalhado`**: Consolida dados espalhados em múltiplas tabelas através de `INNER JOINs`, gerando um relatório completo com o nome do cliente, restaurante, produto e total por linha de item.
-* **`v_entregador_cliente`**: View focada em segurança e regra de negócio, expondo apenas as informações vitais para o entregador (ID do pedido, nome do cliente, telefone e endereço de entrega), ocultando dados sensíveis e financeiros.
+### 3. Views (Visões de Acesso)
+O projeto utiliza Múltiplas Views para segmentar a visualização de dados de acordo com o tipo de usuário, aumentando a segurança:
+* **Relatório Gerencial**: `pedido_detalhado` (Consolida todos os dados da venda e calcula o total por item usando `INNER JOINs`).
+* **Visão do Cliente**: `v_cliente_restaurante` e `v_cliente_produto` (Exibe apenas catálogo e locais).
+* **Visão do Restaurante**: `v_restaurante_pedido` (Focada na gestão da fila de pedidos).
+* **Visão do Entregador**: `v_entregador_pedido` e `v_entregador_cliente` (Oculta valores financeiros e expõe apenas endereços e status de entrega).
 
 ### 4. Functions (Funções)
-* **`calcular_total_geral_pedido`**: Encapsula a lógica financeira. Recebe o ID de um pedido e consulta a view `pedido_detalhado` para retornar o valor total exato a ser cobrado do cliente, lidando automaticamente com verificações nulas (`IFNULL`).
+* **`calcular_total_geral_pedido`**: Encapsula a lógica financeira. Recebe o ID de um pedido e consulta a view `pedido_detalhado` para retornar o valor total exato a ser cobrado do cliente.
 
-### 5. Segurança e Controle de Acesso (DCL)
-* Implementação de criação de usuários específicos (`PedrinhoSushi`, `RicardoCliente`, `LuizinhoMotoboy`) e gerenciamento de permissões (ex: `GRANT SELECT`) para restringir o acesso apenas aos dados necessários (como a leitura da `v_entregador_cliente`).
+### 5. Segurança e Controle de Acesso Baseado em Papéis (RBAC - DCL)
+* Implementação robusta de segurança através da criação de **Roles** (`cliente`, `restaurante`, `entregador`).
+* Definição de permissões granulares (`GRANT SELECT, INSERT, UPDATE`) vinculadas às Roles e não diretamente aos usuários, restringindo até mesmo as colunas específicas que cada papel pode atualizar.
+* Criação de usuários de teste (`PedrinhoSushi`, `RicardoCliente`, `LuizinhoMotoboy`) com atribuição de **Default Roles** para aplicação imediata das regras no login.
+
 
 ## 🛠️ Como Executar o Projeto
 
