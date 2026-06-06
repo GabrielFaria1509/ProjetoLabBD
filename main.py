@@ -1,5 +1,5 @@
 from conexao.db_connection import conectar
-from models.cliente import Cliente
+from models.Cliente import Cliente
 from daos.cliente_dao import ClienteDAO
 from daos.pedido_dao import PedidoDAO
 
