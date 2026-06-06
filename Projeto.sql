@@ -269,3 +269,24 @@ SET DEFAULT ROLE entregador TO 'LuizinhoMotoboy'@'localhost';
 -- TESTE DA VIEW FINAL
 -- =============================================================================
 SELECT * FROM pedido_detalhado;
+
+-- =============================================================================
+-- REQUISITO FINAL: Mostrar o estado de todas as tabelas
+-- =============================================================================
+SELECT '--- TABELA CLIENTE ---' AS Info;
+SELECT * FROM Cliente;
+
+SELECT '--- TABELA ENTREGADOR ---' AS Info;
+SELECT * FROM Entregador;
+
+SELECT '--- TABELA RESTAURANTE ---' AS Info;
+SELECT * FROM Restaurante;
+
+SELECT '--- TABELA PRODUTO ---' AS Info;
+SELECT * FROM Produto;
+
+SELECT '--- TABELA PEDIDO ---' AS Info;
+SELECT * FROM Pedido;
+
+SELECT '--- TABELA PEDIDO_ITENS ---' AS Info;
+SELECT * FROM Pedido_Itens;
