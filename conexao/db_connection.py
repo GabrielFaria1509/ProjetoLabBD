@@ -1,8 +1,8 @@
-import mysql.connector
-from mysql.connector import Error;
+import mysql.connector ##Biblioteca para conectar ao MySQL
+from mysql.connector import Error; 
 
-def conectar():
-    try:
+def conectar(): ##Função para estabelecer conexão com o banco de dados
+    try: ##try catch para lidar com possíveis erros de conexão
         conexao = mysql.connector.connect(
             host = "localhost",
             database = "app_servico",
