@@ -38,12 +38,12 @@ def main():
 
     while True:
         print("\n=== PAINEL DE CONTROLE - APP SERVIÇO ===")
-        print("1. Gerenciar Clientes (CRUD + Busca)")
-        print("2. Gerenciar Entregadores (CRUD + Busca)")
-        print("3. Gerenciar Restaurantes (CRUD + Busca)")
-        print("4. Gerenciar Produtos (CRUD + Busca)")
-        print("5. Gerenciar Pedidos e Itens (CRUD + Busca)")
-        print("6. Executar Consultas Avançadas (JOINs Requeridos)")
+        print("1. Gerenciar Clientes ")
+        print("2. Gerenciar Entregadores")
+        print("3. Gerenciar Restaurantes")
+        print("4. Gerenciar Produtos")
+        print("5. Gerenciar Pedidos e Itens")
+        print("6. Executar Consultas Avançadas")
         print("0. Encerrar Sistema")
         
         opcao = input("Selecione um módulo: ")
@@ -146,10 +146,10 @@ def main():
                 exibir_tabela(p_dao.buscar_por_status(input("Filtrar por status exato: ")))
 
         elif opcao == '6':
-            print("\n-- CONSULTAS AVANÇADAS (REQUISITO: SELECT COM JOIN) --")
-            print("1. [JOIN 1] Clientes e seus respectivos Pedidos")
-            print("2. [JOIN 2] Pedidos vinculados aos seus Entregadores")
-            print("3. [JOIN 3] Relatório Completo (Pedido + Cliente + Produto + Restaurante)")
+            print("\n-- CONSULTAS AVANÇADAS --")
+            print("1.Clientes e seus respectivos Pedidos")
+            print("2.Pedidos vinculados aos seus Entregadores")
+            print("3.Relatório Completo (Pedido + Cliente + Produto + Restaurante)")
             sub = input("Escolha a consulta: ")
             if sub == '1':
                 exibir_tabela(c_dao.listar_clientes_com_seus_pedidos())
