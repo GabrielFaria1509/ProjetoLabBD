@@ -1,3 +1,5 @@
+
+##Modulo responsável por estabelecer a conexão com o banco de dados MySQL
 import mysql.connector ##Biblioteca para conectar ao MySQL
 from mysql.connector import Error; 
 
